@@ -13,6 +13,10 @@ module ClickSession
       end
     end
 
+    def copy_initializer
+      copy_file 'initializers/click_session.rb', 'config/initializers/click_session.rb'
+    end
+
     private
 
     def copy_migration(migration_name, config = {})
