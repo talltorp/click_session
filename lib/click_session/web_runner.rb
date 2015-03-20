@@ -16,7 +16,7 @@ module ClickSession
       page = Capybara::Session.new(ClickSession.configuration.driver_client)
     end
 
-    def run
+    def run(model)
       raise NotImplementedError("You need to override the #steps method by sub classing WebRunner")
     end
 
