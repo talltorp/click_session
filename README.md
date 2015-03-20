@@ -12,6 +12,7 @@ The Capybara team has put a lot of thought into how these web apps can be tested
 
 ### Generate a migration
 `rails generate click_session:install`
+This will create a migration and generate an initializer with configuration parameters needed for click_session
 
 ### Define the steps in a class
 Name the class ```ClickSessionRunner``` and add a method called ```run```.  
@@ -21,23 +22,27 @@ This class must extend the ```WebRunner``` class
 The ```model``` is an ActiveRecord model which holds the data needed for the session. 
 
 ```ruby
-class ClickSessionRunner < WebRunner
+class ClickSessionRunner < ClickSession::WebRunner
   
   # Steps to simulate
   def run(model)
-    visit "http://www.google.com"
-    fill_in "Query", with: "Capybara"
-    click_button "Google Search"
+    visit "https://www.stackoverflow.com"
+    fill_in "q", with: "Capybara"
+    press_enter_to_submit
 
-    model.contents = first_search_result.text
+    model.name = first_search_result.text
 
     model.save
   end
 
   private
 
+  def press_enter_to_submit
+    find_field('q').native.send_key(:enter)
+  end
+
   def first_search_result
-    page.find(".rc")
+    page.first(".summary")
   end
 end
 ```
@@ -114,6 +119,7 @@ end
 
 ```ruby
 ClickSession.configure do | config |
+  config.processor_class = MyCustomProcessor
   config.notifier_class = MyCustomNotifier
   config.serializer_class = MyCustomSerializer
   config.success_callback_url = "https://my.domain.com/webhook_success"
