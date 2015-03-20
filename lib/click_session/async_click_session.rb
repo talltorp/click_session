@@ -1,5 +1,11 @@
 module ClickSession
-  class AsyncClickSession < Base
+  class AsyncClickSession
+    attr_reader :model
+    attr_accessor :click_session
+
+    def initialize(model)
+      @model = model
+    end
 
     def run
       validate_async_configuration
@@ -22,6 +28,18 @@ module ClickSession
 
     def failure_callback_missing?
       ClickSession.configuration.failure_callback_url == nil
+    end
+
+    def serialize_success_response
+      serializer.serialize_success(click_session)
+    end
+
+    def serialize_failure_response
+      serializer.serialize_failure(click_session)
+    end
+
+    def serializer
+      @serializer ||= ClickSession::ResponseSerializer.new
     end
   end
 end

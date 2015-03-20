@@ -1,7 +1,14 @@
 module ClickSession
 
   # Executes the click session and retuns a serialized response
-  class SyncClickSession < Base
+  class Sync
+    attr_reader :model
+    attr_accessor :click_session
+
+    def initialize(model)
+      @model = model
+    end
+
     def run
       @click_session = SessionState.create!(model: model)
 
@@ -26,6 +33,14 @@ module ClickSession
     private
 
     delegate :processor_class, :notifier_class, to: :clicksession_configuration
+
+    def serialize_success_response
+      serializer.serialize_success(click_session)
+    end
+
+    def serialize_failure_response
+      serializer.serialize_failure(click_session)
+    end
 
     def processor
       @processor ||= ClickSession::WebRunnerProcessor.new(configured_web_runner)
@@ -52,6 +67,10 @@ module ClickSession
 
     def clicksession_configuration
       ClickSession.configuration
+    end
+
+    def serializer
+      @serializer ||= ClickSession::ResponseSerializer.new
     end
   end
 end

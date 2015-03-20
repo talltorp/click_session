@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'click_session/configuration'
 require 'support/test_unit_model'
 
-describe ClickSession::SyncClickSession do
+describe ClickSession::Sync do
   describe "#run" do
 
     let(:model) { create(:test_unit_model) }
@@ -30,14 +30,14 @@ describe ClickSession::SyncClickSession do
       end
 
       it "saves the session_state" do
-        sync_click_session = ClickSession::SyncClickSession.new(model)
+        sync_click_session = ClickSession::Sync.new(model)
 
         expect { sync_click_session.run }.
           to change { ClickSession::SessionState.count }.by(1)
       end
 
       it "processes the session" do
-        sync_click_session = ClickSession::SyncClickSession.new(model)
+        sync_click_session = ClickSession::Sync.new(model)
 
         sync_click_session.run
 
@@ -67,7 +67,7 @@ describe ClickSession::SyncClickSession do
             to receive(:screenshot).
             and_return(screenshot_configuration)
 
-          sync_click_session = ClickSession::SyncClickSession.new(model)
+          sync_click_session = ClickSession::Sync.new(model)
 
           sync_click_session.run
 
@@ -86,7 +86,7 @@ describe ClickSession::SyncClickSession do
       end
 
       it "uses the web_runner and notifier from the configuration" do
-        sync_click_session = ClickSession::SyncClickSession.new(model)
+        sync_click_session = ClickSession::Sync.new(model)
 
         sync_click_session.run
 
@@ -95,7 +95,7 @@ describe ClickSession::SyncClickSession do
       end
 
       it "changes the state of the click_session to 'success_reported'" do
-        sync_click_session = ClickSession::SyncClickSession.new(model)
+        sync_click_session = ClickSession::Sync.new(model)
 
         sync_click_session.run
 
@@ -103,7 +103,7 @@ describe ClickSession::SyncClickSession do
       end
 
       it "returns a serialized OK response with the model" do
-        sync_click_session = ClickSession::SyncClickSession.new(model)
+        sync_click_session = ClickSession::Sync.new(model)
 
         response = sync_click_session.run
 
@@ -127,14 +127,14 @@ describe ClickSession::SyncClickSession do
       end
 
       it "saves the session_state" do
-        sync_click_session = ClickSession::SyncClickSession.new(model)
+        sync_click_session = ClickSession::Sync.new(model)
 
         expect { sync_click_session.run }.
           to change { ClickSession::SessionState.count }.by(1)
       end
 
       it "returns a serialized FAIL response" do
-        sync_click_session = ClickSession::SyncClickSession.new(model)
+        sync_click_session = ClickSession::Sync.new(model)
 
         response = sync_click_session.run
 
@@ -144,7 +144,7 @@ describe ClickSession::SyncClickSession do
       end
 
       it "changes the state of the click_session to 'reported'" do
-        sync_click_session = ClickSession::SyncClickSession.new(model)
+        sync_click_session = ClickSession::Sync.new(model)
 
         sync_click_session.run
 

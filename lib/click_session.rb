@@ -1,6 +1,5 @@
 require "click_session/version"
 require "click_session/session_state"
-require "click_session/base"
 require "click_session/configuration"
 require "click_session/exceptions"
 require "click_session/notifier"
