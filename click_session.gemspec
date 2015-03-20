@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = ClickSession::VERSION
   spec.authors       = ["Tobias Talltorp"]
   spec.email         = ["tobias@talltorp.se"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.summary       = "Navigates the web for you"
+  spec.description   = "Navigates the web for you"
   spec.homepage      = ""
   spec.license       = "MIT"
 
