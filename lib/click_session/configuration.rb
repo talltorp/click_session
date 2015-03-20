@@ -26,7 +26,7 @@ module ClickSession
         raise NameError.new(<<-ERROR.strip_heredoc, 'model_class')
           To use ClickSession, you must define the name of the active model
           you want ClickSession to operate on.
-          See https://github.com/talltorp/clicksession for more information.
+          See https://github.com/talltorp/click_session for more information.
         ERROR
       end
 
@@ -45,7 +45,7 @@ module ClickSession
           else
             raise NameError.new(<<-ERROR.strip_heredoc, 'ClickSessionRunner')
               To use ClickSession, you must either define `ClickSessionRunner` or configure a
-              different processor. See https://github.com/talltorp/clicksession for
+              different processor. See https://github.com/talltorp/click_session for
               more information.
             ERROR
           end
@@ -74,7 +74,7 @@ module ClickSession
       if notifier_class_violates_interface(constantized_notifier)
         raise ArgumentError.new(<<-ERROR.strip_heredoc)
           Your custom notifier must inherit ClickSession::Notifier
-          See https://github.com/talltorp/clicksession
+          See https://github.com/talltorp/click_session
         ERROR
       end
 
@@ -105,7 +105,7 @@ module ClickSession
       if @screenshot == nil
         raise ArgumentError.new("In order to save screenshots, you need to configure \
           the information.
-          https://github.com/talltorp/clicksession#optional-configurations-and-extentions
+          https://github.com/talltorp/click_session#optional-configurations-and-extentions
           ")
       end
 

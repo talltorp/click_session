@@ -34,7 +34,7 @@ module ClickSession
           raise ConfigurationError.new(<<-ERROR.strip_heredoc)
             In order to save screenshots, you need to enter s3 information
             in the 'screenshot' option of the configuration
-            See https://github.com/talltorp/clicksession for more information.
+            See https://github.com/talltorp/click_session for more information.
           ERROR
         end
       end
