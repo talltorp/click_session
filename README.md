@@ -9,6 +9,10 @@ The Capybara team has put a lot of thought into how these web apps can be tested
 ## Installation
 
 ## How to set up
+Add to `Gemfile`
+```gem "click_session"``` 
+
+Run `bundle install`
 
 ### Generate a migration
 `rails generate click_session:install`
