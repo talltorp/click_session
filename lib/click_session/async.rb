@@ -1,5 +1,5 @@
 module ClickSession
-  class AsyncClickSession
+  class Async
     attr_reader :model
     attr_accessor :click_session
 

@@ -4,8 +4,8 @@ require "click_session/configuration"
 require "click_session/exceptions"
 require "click_session/notifier"
 
-require "click_session/async_click_session"
-require "click_session/sync_click_session"
+require "click_session/async"
+require "click_session/sync"
 
 require "click_session/click_session_processor"
 require "click_session/web_runner"

@@ -3,7 +3,7 @@ require 'click_session/configuration'
 require 'click_session/exceptions'
 require 'support/test_unit_model'
 
-describe ClickSession::AsyncClickSession do
+describe ClickSession::Async do
   describe "#run" do
     let(:model) {
       create(:test_unit_model)
@@ -12,7 +12,7 @@ describe ClickSession::AsyncClickSession do
     describe "guard clauses" do
       context "when no callback urls has been configured" do
         it "raises a friendly error" do
-          async_click_session = ClickSession::AsyncClickSession.new(model)
+          async_click_session = ClickSession::Async.new(model)
 
           expect { async_click_session.run }.to raise_error(ClickSession::ConfigurationError)
         end
@@ -30,14 +30,14 @@ describe ClickSession::AsyncClickSession do
       end
 
       it "saves the session_state" do
-        async_click_session = ClickSession::AsyncClickSession.new(model)
+        async_click_session = ClickSession::Async.new(model)
 
         expect { async_click_session.run }.
           to change { ClickSession::SessionState.count }.by(1)
       end
 
       it "returns a serialized OK response without the model" do
-        async_click_session = ClickSession::AsyncClickSession.new(model)
+        async_click_session = ClickSession::Async.new(model)
 
         response = async_click_session.run
 
