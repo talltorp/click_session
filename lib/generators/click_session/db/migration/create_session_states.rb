@@ -1,4 +1,4 @@
-class CreateClickSessions < ActiveRecord::Migration
+class CreateSessionStates < ActiveRecord::Migration
   def change
     create_table :session_states  do |t|
       t.integer "webhook_attempts", default: 0, null: false
