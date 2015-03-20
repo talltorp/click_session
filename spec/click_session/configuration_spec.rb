@@ -18,14 +18,14 @@ describe ClickSession::Configuration do
 
     it 'raises a helpful error if model_class_name is undefined' do
       expect { ClickSession.configuration.model_class }.
-        to raise_error(NameError, %r{https://github\.com/talltorp/clicksession})
+        to raise_error(NameError, %r{https://github\.com/talltorp/click_session})
     end
 
     it 'raises a helpful error if ClickSessionRunner is undefined' do
       allow(Kernel).to receive_messages(const_defined?: false)
 
       expect { ClickSession.configuration.processor_class }.
-        to raise_error(NameError, %r{https://github\.com/talltorp/clicksession})
+        to raise_error(NameError, %r{https://github\.com/talltorp/click_session})
     end
   end
 
