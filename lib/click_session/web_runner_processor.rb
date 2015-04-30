@@ -26,6 +26,10 @@ module ClickSession
       model
     end
 
+    def stop_processing
+      @making_requests = false
+    end
+
     delegate :save_screenshot, to: :web_runner
 
     private
@@ -35,14 +39,10 @@ module ClickSession
       @making_requests
     end
 
-    def stop_making_requests
-      @making_requests = false
-    end
-
     def run_steps_in_browser_with(model)
       web_runner.reset
       web_runner.run(model)
-      stop_making_requests
+      stop_processing
     end
 
     def make_note_of_error(error)

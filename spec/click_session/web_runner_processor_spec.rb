@@ -127,7 +127,30 @@ describe ClickSession::WebRunnerProcessor do
 
       notifier_stub
     end
+
+    context "when further retries have been explicitly canceled" do
+      it "no more requests are made" do
+        web_runner = ok_web_runner_stub(model)
+        web_runner_processor = ClickSession::WebRunnerProcessor.new(web_runner)
+
+        web_runner_processor.stop_processing
+        enriched_model = web_runner_processor.process(model)
+
+        expect(web_runner).not_to receive(:run)
+      end
+
+      def ok_web_runner_stub(model)
+        web_runner = ClickSessionRunner.new
+        allow(web_runner).
+          to receive(:run).
+          with(model)
+
+        web_runner
+      end
+    end
   end
+
+
 
   describe "#save_screenshot_for" do
     it "delegates :save_screenshot to WebRunner" do
