@@ -11,9 +11,7 @@ describe ClickSession::Sync do
       @notifier_stub = stub_notifier_in_configuration
       mock_configuration_model_class_with(model)
 
-      processor_stub = ClickSession::WebRunner.new
-      mock_configuration_processor_class_with(processor_stub)
-      @web_runner_processor_stub = stub_web_runner_processor_with( processor_stub )
+      @web_runner_processor_stub = stub_web_runner_processor
     end
 
     context 'when processing is successful' do
@@ -85,13 +83,12 @@ describe ClickSession::Sync do
         end
       end
 
-      it "uses the web_runner and notifier from the configuration" do
+      it "uses the notifier from the configuration" do
         sync_click_session = ClickSession::Sync.new(model)
 
         sync_click_session.run
 
         expect(ClickSession.configuration).to have_received(:notifier_class)
-        expect(ClickSession.configuration).to have_received(:processor_class)
       end
 
       it "changes the state of the click_session to 'success_reported'" do
@@ -184,8 +181,8 @@ describe ClickSession::Sync do
   end
 
 
-  def stub_web_runner_processor_with(processor_stub)
-    web_runner_processor_stub = ClickSession::WebRunnerProcessor.new(processor_stub)
+  def stub_web_runner_processor
+    web_runner_processor_stub = ClickSession::WebRunnerProcessor.new
 
     allow(web_runner_processor_stub).
       to receive(:process).

@@ -2,13 +2,12 @@ require_relative "./exceptions"
 
 module ClickSession
   class WebRunnerProcessor
-    def initialize(web_runner)
-      @web_runner = web_runner
+    def initialize
       @retries_made  = 0
       @making_requests = true
     end
 
-    delegate :notifier_class, to: :clicksession_configuration
+    delegate :processor_class, :notifier_class, to: :clicksession_configuration
 
     def process(model)
       while can_make_requests?
@@ -33,7 +32,6 @@ module ClickSession
     delegate :save_screenshot, to: :web_runner
 
     private
-    attr_reader :web_runner
 
     def can_make_requests?
       @making_requests
@@ -52,6 +50,10 @@ module ClickSession
 
     def too_many_retries?
       @retries_made > 2
+    end
+
+    def web_runner
+      @web_runner ||= processor_class.new
     end
 
     def notifier
