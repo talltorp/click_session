@@ -7,7 +7,7 @@ module ClickSession
       @making_requests = true
     end
 
-    delegate :processor_class, :notifier_class, to: :clicksession_configuration
+    delegate :web_runner_class, :notifier_class, to: :clicksession_configuration
 
     def process(model)
       while can_make_requests?
@@ -53,7 +53,7 @@ module ClickSession
     end
 
     def web_runner
-      @web_runner ||= processor_class.new
+      @web_runner ||= web_runner_class.new
     end
 
     def notifier

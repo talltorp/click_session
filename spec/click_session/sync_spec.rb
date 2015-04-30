@@ -157,7 +157,7 @@ describe ClickSession::Sync do
       and_return(processor_stub)
 
     allow(ClickSession.configuration).
-      to receive(:processor_class).
+      to receive(:web_ruunner_class).
       and_return(processor_double)
   end
 
@@ -168,7 +168,7 @@ describe ClickSession::Sync do
       and_return(notifier_mock)
 
     allow(ClickSession.configuration).
-      to receive(:processor_class).
+      to receive(:web_runner_class).
       and_return(notifier_double)
 
     notifier_mock

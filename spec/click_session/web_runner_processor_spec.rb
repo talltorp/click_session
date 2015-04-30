@@ -118,7 +118,7 @@ describe ClickSession::WebRunnerProcessor do
 
     # Make the configuration return our double
     allow(ClickSession.configuration).
-      to receive(:processor_class).
+      to receive(:web_runner_class).
       and_return(web_runner_double)
 
     web_runner_stub

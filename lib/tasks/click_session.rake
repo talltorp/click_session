@@ -13,7 +13,7 @@ namespace :click_session do
     end
 
     def configured_web_runner
-      ClickSession.configuration.processor_class.new
+      ClickSession.configuration.web_runner_class.new
     end
 
     def processor_options
