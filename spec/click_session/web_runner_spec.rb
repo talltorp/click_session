@@ -2,6 +2,18 @@ require "spec_helper"
 require "click_session/configuration"
 
 describe ClickSession::WebRunner do
+  describe "#point_of_no_return" do
+    it "tells its processor it should stop retrying errors" do
+      processor = ClickSession::WebRunnerProcessor.new
+      allow(processor).to receive(:stop_processing)
+      web_runner = ClickSession::WebRunner.new(processor)
+
+      web_runner.point_of_no_return
+
+      expect(processor).to have_received(:stop_processing).once
+    end
+  end
+
   describe "#save_screenshot" do
     context 'when screenshot was successful' do
       before :each do
@@ -27,7 +39,8 @@ describe ClickSession::WebRunner do
       end
 
       it "saves the screenshot in an s3 bucket" do
-        runner = ClickSession::WebRunner.new
+        processor = ClickSession::WebRunnerProcessor.new
+        runner = ClickSession::WebRunner.new(processor)
         stub_capybara
         stub_s3
 
@@ -35,7 +48,8 @@ describe ClickSession::WebRunner do
       end
 
       it "returns the url to the saved screenshot" do
-        runner = ClickSession::WebRunner.new
+        processor = ClickSession::WebRunnerProcessor.new
+        runner = ClickSession::WebRunner.new(processor)
         stub_capybara
         stub_s3
 
@@ -59,7 +73,8 @@ describe ClickSession::WebRunner do
 
     context 'when the screenshot fails' do
       it "does not try to save anything" do
-        runner = ClickSession::WebRunner.new
+        processor = ClickSession::WebRunnerProcessor.new
+        runner = ClickSession::WebRunner.new(processor)
 
         allow_any_instance_of(Capybara::Session).
           to receive(:save_screenshot).

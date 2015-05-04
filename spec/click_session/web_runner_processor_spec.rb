@@ -14,9 +14,9 @@ describe ClickSession::WebRunnerProcessor do
 
     context "when all requests are ok" do
       it "returns the enriched model" do
-        web_runner = ok_web_runner_stub(model)
-        stub_web_runner_in_configuration_with(web_runner)
         web_runner_processor = ClickSession::WebRunnerProcessor.new
+        web_runner = ok_web_runner_stub(model, web_runner_processor)
+        stub_web_runner_in_configuration_with(web_runner)
 
         enriched_model = web_runner_processor.process(model)
 
@@ -31,9 +31,10 @@ describe ClickSession::WebRunnerProcessor do
 
       describe "but third retry succeeds" do
         it "the state has changed to 'processed'" do
-          web_runner = third_time_ok_web_runner_stub(model)
-          stub_web_runner_in_configuration_with(web_runner)
           web_runner_processor = ClickSession::WebRunnerProcessor.new
+          web_runner = third_time_ok_web_runner_stub(model, web_runner_processor)
+          stub_web_runner_in_configuration_with(web_runner)
+
 
           enriched_model = web_runner_processor.process(model)
 
@@ -41,17 +42,18 @@ describe ClickSession::WebRunnerProcessor do
         end
 
         it "notifies about the rescued error" do
-          web_runner = third_time_ok_web_runner_stub(model)
-          stub_web_runner_in_configuration_with(web_runner)
           web_runner_processor = ClickSession::WebRunnerProcessor.new
+          web_runner = third_time_ok_web_runner_stub(model, web_runner_processor)
+          stub_web_runner_in_configuration_with(web_runner)
+
 
           web_runner_processor.process(model)
 
           expect(@notifier_stub).to have_received(:rescued_error).twice
         end
 
-        def third_time_ok_web_runner_stub(model)
-          web_runner = ClickSessionRunner.new
+        def third_time_ok_web_runner_stub(model, processor)
+          web_runner = ClickSessionRunner.new(processor)
           allow(web_runner).
             to receive(:run).
             with(model) do | args |
@@ -68,9 +70,10 @@ describe ClickSession::WebRunnerProcessor do
 
       describe "when all retry attempts fail" do
         it "raises an error and notifies the status_notifier of each error" do
-          web_runner = all_requests_fail_web_runner_stub(model)
-          stub_web_runner_in_configuration_with(web_runner)
           web_runner_processor = ClickSession::WebRunnerProcessor.new
+          web_runner = all_requests_fail_web_runner_stub(model, web_runner_processor)
+          stub_web_runner_in_configuration_with(web_runner)
+
 
           expect { web_runner_processor.process(model) }.
             to raise_error(ClickSession::TooManyRetriesError)
@@ -82,9 +85,9 @@ describe ClickSession::WebRunnerProcessor do
 
       context "when further retries have been explicitly canceled" do
         it "no more requests are made" do
-          web_runner = ok_web_runner_stub(model)
-          stub_web_runner_in_configuration_with(web_runner)
           web_runner_processor = ClickSession::WebRunnerProcessor.new
+          web_runner = ok_web_runner_stub(model, web_runner_processor)
+          stub_web_runner_in_configuration_with(web_runner)
 
           web_runner_processor.stop_processing
           enriched_model = web_runner_processor.process(model)
@@ -97,10 +100,11 @@ describe ClickSession::WebRunnerProcessor do
 
   describe "#save_screenshot_for" do
     it "delegates :save_screenshot to WebRunner" do
-      model = create(:test_unit_model)
-      web_runner = ok_web_runner_stub(model)
-      stub_web_runner_in_configuration_with(web_runner)
       web_runner_processor = ClickSession::WebRunnerProcessor.new
+      model = create(:test_unit_model)
+      web_runner = ok_web_runner_stub(model, web_runner_processor)
+      stub_web_runner_in_configuration_with(web_runner)
+
 
       web_runner_processor.save_screenshot("a_unique_name")
 
@@ -145,8 +149,8 @@ describe ClickSession::WebRunnerProcessor do
     notifier_stub
   end
 
-  def ok_web_runner_stub(model)
-    web_runner = ClickSessionRunner.new
+  def ok_web_runner_stub(model, processor)
+    web_runner = ClickSessionRunner.new(processor)
     allow(web_runner).
       to receive(:run).
       with(model)
@@ -161,8 +165,8 @@ describe ClickSession::WebRunnerProcessor do
     web_runner
   end
 
-  def all_requests_fail_web_runner_stub(model)
-    web_runner = ClickSessionRunner.new
+  def all_requests_fail_web_runner_stub(model, processor)
+    web_runner = ClickSessionRunner.new(processor)
 
     allow(web_runner).
       to receive(:run).

@@ -53,7 +53,7 @@ module ClickSession
     end
 
     def web_runner
-      @web_runner ||= web_runner_class.new
+      @web_runner ||= web_runner_class.new(self)
     end
 
     def notifier
