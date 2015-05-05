@@ -221,6 +221,12 @@ __Note:__ This requires you to add the S3 credentials and bucket name to the con
 
 
 ## Rake tasks
+In order to run the included rake tasks, you need to load them in your applications `Rakefile`  
+```
+spec = Gem::Specification.find_by_name 'click_session'
+load "#{spec.gem_dir}/lib/tasks/click_session.rake"
+```
+
 ### click_session:process_active
 Processes all the active click sessions, meaning the ones that are ready to be run.
 
