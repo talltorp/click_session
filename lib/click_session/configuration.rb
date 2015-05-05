@@ -36,8 +36,8 @@ module ClickSession
       @model_class = klass.to_s
     end
 
-    def web_runner_class
-      @web_runner_class ||=
+    def runner_class
+      @runner_class ||=
         begin
           if Kernel.const_defined?(:ClickSessionRunner)
             "ClickSessionRunner"
@@ -50,11 +50,11 @@ module ClickSession
           end
         end
 
-      @web_runner_class.constantize
+      @runner_class.constantize
     end
 
-    def web_runner_class=(klass)
-      @web_runner_class = klass.to_s
+    def runner_class=(klass)
+      @runner_class = klass.to_s
     end
 
     def serializer_class

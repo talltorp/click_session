@@ -123,7 +123,7 @@ end
 
 ```ruby
 ClickSession.configure do | config |
-  config.web_runner_class = MyCustomRunner 
+  config.runner_class = MyCustomRunner 
   config.notifier_class = MyCustomNotifier
   config.serializer_class = MyCustomSerializer
   config.success_callback_url = "https://my.domain.com/webhook_success"

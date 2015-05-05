@@ -8,7 +8,7 @@ describe ClickSession::Configuration do
     end
 
     it 'provides defaults' do
-      expect(ClickSession.configuration.web_runner_class).to eq(ClickSessionRunner)
+      expect(ClickSession.configuration.runner_class).to eq(ClickSessionRunner)
       expect(ClickSession.configuration.serializer_class).to eq(ClickSession::WebhookModelSerializer)
       expect(ClickSession.configuration.notifier_class).to eq(ClickSession::Notifier)
       expect(ClickSession.configuration.driver_client).to eq(:poltergeist)
@@ -24,7 +24,7 @@ describe ClickSession::Configuration do
     it 'raises a helpful error if ClickSessionRunner is undefined' do
       allow(Kernel).to receive_messages(const_defined?: false)
 
-      expect { ClickSession.configuration.web_runner_class }.
+      expect { ClickSession.configuration.runner_class }.
         to raise_error(NameError, %r{https://github\.com/talltorp/click_session})
     end
   end
@@ -45,15 +45,15 @@ describe ClickSession::Configuration do
       expect(ClickSession.configuration.model_class).to eq(DummyModelClass)
     end
 
-    it "stores the web_runner_class" do
+    it "stores the runner_class" do
       class DummyProcessorClass
       end
 
       ClickSession.configure do | config |
-        config.web_runner_class = DummyProcessorClass
+        config.runner_class = DummyProcessorClass
       end
 
-      expect(ClickSession.configuration.web_runner_class).to eq(DummyProcessorClass)
+      expect(ClickSession.configuration.runner_class).to eq(DummyProcessorClass)
     end
 
     it "stores the serializer_class" do

@@ -6,14 +6,10 @@ namespace :click_session do
     def processor_for(session_state)
       ClickSession::ClickSessionProcessor.new(
         session_state,
-        ClickSession::WebRunnerProcessor.new(configured_web_runner),
+        ClickSession::WebRunnerProcessor.new,
         ClickSession.configuration.notifier_class.new,
         processor_options
       )
-    end
-
-    def configured_web_runner
-      ClickSession.configuration.web_runner_class.new
     end
 
     def processor_options

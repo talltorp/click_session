@@ -168,7 +168,7 @@ describe ClickSession::Sync do
       and_return(notifier_mock)
 
     allow(ClickSession.configuration).
-      to receive(:web_runner_class).
+      to receive(:runner_class).
       and_return(notifier_double)
 
     notifier_mock
