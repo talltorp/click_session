@@ -1,4 +1,4 @@
 ClickSession.configure do |config|
   config.model_class = RenameThisToYourOwnActiveModelClass
-  config.processor_class = ClickSessionRunner
+  config.runner_class = ClickSessionRunner
 end

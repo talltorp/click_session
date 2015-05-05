@@ -32,7 +32,7 @@ module ClickSession
 
     private
 
-    delegate :processor_class, :notifier_class, to: :clicksession_configuration
+    delegate :notifier_class, to: :clicksession_configuration
 
     def serialize_success_response
       serializer.serialize_success(click_session)
@@ -43,11 +43,7 @@ module ClickSession
     end
 
     def processor
-      @processor ||= ClickSession::WebRunnerProcessor.new(configured_web_runner)
-    end
-
-    def configured_web_runner
-      @web_runner ||= processor_class.new
+      @processor ||= ClickSession::WebRunnerProcessor.new
     end
 
     def configured_notifier

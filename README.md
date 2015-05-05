@@ -7,16 +7,16 @@ Modern web apps rely more and more on html to be loaded asyncronously after the 
 The Capybara team has put a lot of thought into how these web apps can be tested and because of this, it also makes a good tool for scraping these web sites.
 
 ## Installation
+Add to `Gemfile`  
+```gem "click_session"```  
 
-## How to set up
-Add to `Gemfile`
-```gem "click_session"``` 
-
-Run `bundle install`
+Run `bundle install`  
 
 ### Generate a migration
-`rails generate click_session:install`
+`rails generate click_session:install`  
 This will create a migration and generate an initializer with configuration parameters needed for click_session
+
+## How to set up
 
 ### Define the steps in a class
 Name the class ```ClickSessionRunner``` and add a method called ```run```.  
@@ -63,24 +63,7 @@ result = sync_click_session.run
 # --> result contains the serialized user data 
 ```
 
-### Run session asyncronously
-```ruby
-user = User.new
-async_click_session = ClickSession::Async.new(user)
-result = async_click_session.run 
-# --> saves the User
-# --> saves the SessionState
-# --> result contains the ID of the saved SessionState
-
-# $ rake click_session:process_active
-# --> run the steps in the ClickSessionRunner
-
-# $ rake click_session:report_successful
-# --> the request sent contains the serialized user data 
-```
-
-### result hash
-Example:
+Example of result hash:  
 ```
 {
   id: 1234,   
@@ -93,6 +76,53 @@ Example:
   }
 }
 ```
+
+### Run session asyncronously
+__1__ Create a new session
+```ruby
+user = User.new
+async_click_session = ClickSession::Async.new(user)
+result = async_click_session.run 
+# --> saves the User
+# --> saves the SessionState
+# --> result contains the ID of the saved SessionState
+```
+Example of result
+```
+{
+  id: 1234,   
+  status: {
+    success: true,          # Boolean
+  }
+}
+```
+
+__2__ Run the rake task to process all the session that has not yet been executed
+```
+# $ rake click_session:process_active
+# --> run the steps in the ClickSessionRunner
+```
+
+__3__ Run the rake task that reports all the successful sessions
+```
+# $ rake click_session:report_successful
+# --> the request sent contains the serialized user data 
+```
+Example of payload posted to your webhook
+```
+{
+  id: 1234,   
+  status: {
+    success: true,          # Boolean
+  },
+  data: {                   # This is the output of the Serialized model
+    name: "Joe",
+    facebook_avatar: "http://fb.com/i/joe.png"
+  }
+}
+```
+
+
 The only optional part of the result is the ```data```.
 
 ### Example of how to use it in a rails controller action
@@ -112,6 +142,11 @@ end
 
 ```
 
+### Additional methods available to use in the specified steps
+Method | Description
+------ | -----------
+`point_of_no_return`| This step prevents the processor running your steps to __NOT__ retry the steps if an error is raised. This is especially useful if you are automating a payment and you don't want the payment to be processed more than once. 
+
 ## Mandatory configurations
 ```ruby
 ClickSession.configure do | config |
@@ -123,7 +158,7 @@ end
 
 ```ruby
 ClickSession.configure do | config |
-  config.processor_class = MyCustomProcessor
+  config.runner_class = MyCustomRunner 
   config.notifier_class = MyCustomNotifier
   config.serializer_class = MyCustomSerializer
   config.success_callback_url = "https://my.domain.com/webhook_success"
@@ -221,6 +256,12 @@ __Note:__ This requires you to add the S3 credentials and bucket name to the con
 
 
 ## Rake tasks
+In order to run the included rake tasks, you need to load them in your applications `Rakefile`  
+```
+spec = Gem::Specification.find_by_name 'click_session'
+load "#{spec.gem_dir}/lib/tasks/click_session.rake"
+```
+
 ### click_session:process_active
 Processes all the active click sessions, meaning the ones that are ready to be run.
 

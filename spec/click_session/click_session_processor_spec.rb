@@ -226,8 +226,7 @@ describe ClickSession::ClickSessionProcessor do
     end
 
     def mock_succesful_web_runner_processor
-      processor_stub = DummyWebRunner.new
-      web_runner_processor_mock = ClickSession::WebRunnerProcessor.new(processor_stub)
+      web_runner_processor_mock = ClickSession::WebRunnerProcessor.new
 
       allow(web_runner_processor_mock).
         to receive(:process).
@@ -246,8 +245,7 @@ describe ClickSession::ClickSessionProcessor do
     end
 
     def mock_failing_web_runner_processor
-      processor_stub = DummyWebRunner.new
-      web_runner_processor_mock = ClickSession::WebRunnerProcessor.new(processor_stub)
+      web_runner_processor_mock = ClickSession::WebRunnerProcessor.new
 
       allow(web_runner_processor_mock).
         to receive(:process).

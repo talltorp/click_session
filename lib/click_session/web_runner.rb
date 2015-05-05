@@ -9,11 +9,14 @@ module ClickSession
   class WebRunner
     include Capybara::DSL
 
-    def initialize
+    attr_reader :processor
+
+    def initialize(processor)
       Capybara.default_driver = ClickSession.configuration.driver_client
       Capybara.javascript_driver = ClickSession.configuration.driver_client
       Capybara.run_server = false
       page = Capybara::Session.new(ClickSession.configuration.driver_client)
+      @processor = processor
     end
 
     def run(model)
@@ -29,6 +32,10 @@ module ClickSession
       page.save_screenshot(screenshot_save_path, full: true)
 
       S3FileUploader.new.upload_file(@file_name)
+    end
+
+    def point_of_no_return
+      processor.stop_processing
     end
 
     private

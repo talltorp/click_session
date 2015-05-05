@@ -16,8 +16,7 @@ module ClickSession
   end
 
   class Configuration
-    attr_accessor :processor_class,
-      :success_callback_url,
+    attr_accessor :success_callback_url,
       :failure_callback_url,
       :serializer_class
 
@@ -37,8 +36,8 @@ module ClickSession
       @model_class = klass.to_s
     end
 
-    def processor_class
-      @processor_class ||=
+    def runner_class
+      @runner_class ||=
         begin
           if Kernel.const_defined?(:ClickSessionRunner)
             "ClickSessionRunner"
@@ -51,11 +50,11 @@ module ClickSession
           end
         end
 
-      @processor_class.constantize
+      @runner_class.constantize
     end
 
-    def processor_class=(klass)
-      @processor_class = klass.to_s
+    def runner_class=(klass)
+      @runner_class = klass.to_s
     end
 
     def serializer_class
