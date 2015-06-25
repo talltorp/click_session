@@ -1,3 +1,5 @@
+require "aws"
+
 module ClickSession
   class S3Connection
     attr_reader :bucket_name
