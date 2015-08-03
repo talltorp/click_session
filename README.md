@@ -105,7 +105,7 @@ __2__ Run the rake task to process all the session that has not yet been execute
 
 __3__ Run the rake task that reports all the successful sessions
 ```
-# $ rake click_session:report_successful
+# $ rake click_session:report_processed  
 # --> the request sent contains the serialized user data 
 ```
 Example of payload posted to your webhook
@@ -267,8 +267,8 @@ Processes all the active click sessions, meaning the ones that are ready to be r
 
 __Note:__ Only needed for ```ClickSession::Async```
 
-### click_session:report_succesful
-Reports all click_sessions, which were successfully run, to the configured ```success_callback_url```
+### click_session:report_processed
+Reports all click_sessions, which were successfully processed, to the configured ```success_callback_url```
 
 __Note:__ Only needed for ```ClickSession::Async```
 
